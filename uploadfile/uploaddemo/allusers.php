@@ -1,0 +1,51 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>';
+echo "<div class='container fs-3'> <h1> All users</h1>";
+
+##########3 3-display data into a table
+$lines = file("users.txt");
+//var_dump($lines);
+
+echo "<table class='table table-danger'> <tr> <th>ID</th> 
+        <th>Name</th> <th>Email</th> <th>Password</th> 
+        <th>Hoppies</th> <th>ImagePath</th> <th> Image</th> 
+        <th> Edit</th> <th> Delete</th></tr> ";
+
+foreach ($lines as $l){
+    # split line to parts
+//        var_dump($l);
+    #you can split the string into parts
+    echo "<tr>";
+    $linedata=explode(":", $l); # array
+//        var_dump($linedata);
+    foreach ($linedata as $i=>$d){
+        if($i==4){
+//            $hoppies = explode("$", $d);
+            $hoppies = $d;
+            $hoppies =trim($hoppies, "$\n");
+            $hoppies= explode("$", $hoppies);
+            $hoppies= join(",", $hoppies);
+            echo "<td> {$hoppies} </td>";
+        }elseif ($i==5){
+            echo "<td> {$d} </td>";
+            echo "<td> <img src='{$d}' width='50' height='50'> </td>";
+        }
+        else{
+
+            echo "<td> {$d} </td>";
+        }
+
+    }
+    echo "<td><a href='edit.php?id={$linedata[0]}' class='btn btn-warning'> Edit</a> </td> 
+    <td> <a  href='delete.php?id={$linedata[0]}' class='btn btn-danger'> Delete</a> </td></td>";
+    echo "</tr>";
+}
+
+echo "</table>";
+echo "<a href='registerform.php' class='btn btn-primary'> Add new User </a>";
+
+
